@@ -1,5 +1,5 @@
-import { loadEnv } from "./config"
 import { app } from "./app"
+import { loadEnv } from "./config"
 
 /**
  * Execute the application
@@ -12,10 +12,9 @@ const run = async () => {
         // Deploy the application
         app.listen(config.PORT)        
         console.log(`Server on port ${config.PORT}`)
-    } catch (error) {
-        console.error(error)
+    } catch (err) {
+        console.error(err)
     }
-    
 }
 
 run()
