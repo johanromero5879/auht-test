@@ -2,12 +2,14 @@ import { config } from "dotenv"
 
 export enum Env {
     DEV = "dev",
-    PROD = "prod"
+    PROD = "prod",
+    TEST = "test"
 }
 
 interface Config {
     NODE_ENV: Env,
-    PORT: number
+    PORT: number,
+    DATABASE_URL: string
 }
 
 /**
