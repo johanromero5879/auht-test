@@ -1,5 +1,4 @@
-import { hash } from "bcrypt"
-
+import { hashPassword } from "./hash-service"
 import { DuplicateError } from "@shared/errors"
 import { UserRepository, UserIn, validateUser } from "@auth/domain";
 
@@ -19,9 +18,4 @@ export const RegisterUser = (userRepository: UserRepository): IRegisterUser => {
 
         await userRepository.save(user)
     }
-}
-
-const hashPassword = async (password: string) => {
-    const saltRounds = 10
-    return await hash(password, saltRounds)
 }
