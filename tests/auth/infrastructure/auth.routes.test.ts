@@ -1,3 +1,5 @@
+import request from "supertest"
+
 import { createApp } from "@app"
 import { loadEnv } from "@config/index"
 import { makeMockPostRequest } from "@tests/__mocks__"
@@ -77,6 +79,16 @@ describe(`API: ${route}`, () => {
             // Check email missing
             body = {password: "d0ntLookImfake"}
             await makeMockPostRequest({ app, endpoint, body, status})
+        })
+    })
+
+    describe(`DELETE ${route}/logout`, () => {
+        const endpoint = `${route}/logout`
+        
+        test("should return 204", async () => {
+            await request(app)
+                    .delete(endpoint)
+                    .expect(204) // No content
         })
     })
 })

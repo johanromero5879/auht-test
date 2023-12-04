@@ -5,13 +5,18 @@ import { SuccessResponse, ErrorResponse, ErrorBody } from "./response"
 
 export const handleSuccess = <T>(
     res: Response<SuccessResponse<T>>,
-    data: T,
-    status: number = 200
+    data?: T,
+    status: number = data ? 200 : 204
 ) => {
-    res.status(status).json({
-        success: true,
-        data
-    })
+    if (data && status !== 204) {
+        res.status(status).json({
+            success: true,
+            data
+        })
+    } else {
+        res.sendStatus(204) // No Content
+    }
+    
 }
 
 export const handleError = (

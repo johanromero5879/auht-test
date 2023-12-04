@@ -2,12 +2,17 @@ import request from "supertest"
 import { Request, Response, NextFunction, Express } from "express"
 
 export const createMockReqAndRes = () => {
-    const req = {} as Request;
+    const req = {
+        cookies: {}
+    } as Request;
+
     const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
-        cookie: jest.fn()
+        cookie: jest.fn(),
+        clearCookie: jest.fn()
     } as unknown as Response;
+
     const next: NextFunction = jest.fn()
 
     return { req, res, next }

@@ -3,7 +3,7 @@ import { UserRepository } from "@auth/domain"
 import { DependencyContainer } from "./container"
 import { RegisterUser, TokenService, VerifyCredentials } from "@auth/application"
 import { PrismaUserRepository, InMemoryUserRepository } from "@auth/infrastructure/repositories"
-import { LoginController, SignupController } from "@auth/infrastructure/controller"
+import { LoginController, LogoutController, SignupController } from "@auth/infrastructure/controller"
 
 export class AuthContainer extends DependencyContainer {
     constructor(config: Config) {
@@ -27,6 +27,7 @@ export class AuthContainer extends DependencyContainer {
         // infrastructure
         this.register("SignupController", SignupController(registerUser))
         this.register("LoginController", LoginController(verifyCredentials, tokenService))
+        this.register("LogoutController", LogoutController())
     }
 
     private getUserRepository(): UserRepository {

@@ -8,3 +8,4 @@ export const authRouter = Router()
 
 authRouter.post("/signup", container.auth.resolve<Controller>("SignupController"))
 authRouter.post("/login", container.auth.resolve<Controller>("LoginController"))
+authRouter.delete("/logout", container.auth.resolve<Controller>("LogoutController"))
