@@ -6,10 +6,12 @@ export enum Env {
     TEST = "test"
 }
 
-interface Config {
+export interface Config {
     NODE_ENV: Env,
     PORT: number,
-    DATABASE_URL: string
+    ALLOWED_ORIGINS: string,
+    DATABASE_URL: string,
+    JWT_SECRET: string
 }
 
 /**
@@ -21,10 +23,8 @@ export const loadEnv = (envFile: string): Config => {
     const result = config({ path: envFile })
 
     if (result.error) throw Error(`Error on loading ${ envFile }`)
-    console.log(`Loaded ${envFile}`)
 
     const configs = (result.parsed as unknown) as Config
 
-    console.log(`Environment ${configs.NODE_ENV}`)
     return configs
 } 

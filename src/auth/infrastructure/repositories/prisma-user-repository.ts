@@ -1,7 +1,7 @@
 import type { PrismaClient } from "@prisma/client"
 
 import { prisma } from "@shared/infrastructure/prisma"
-import { UserIn, UserOut, UserRepository} from "@auth/domain";
+import { UserIn, UserOut, UserRepository, User} from "@auth/domain";
 
 export class PrismaUserRepository implements UserRepository {
     private prisma: PrismaClient
@@ -14,13 +14,15 @@ export class PrismaUserRepository implements UserRepository {
         await this.prisma.user.create({ data: user }) 
     }
 
-    async findByEmail(email: string): Promise<UserOut | null> {
+    findByEmail(email: string): Promise<UserOut | null>
+    findByEmail(email: string, showPassword: boolean): Promise<User | null>
+    async findByEmail(email: string, showPassword: boolean = false): Promise<UserOut | User | null> {
+
         const userFound = this.prisma.user.findUnique({
             where: { email },
-            select: { id: true, email: true }
+            select: { id: true, email: true, password: showPassword}
         })
 
         return userFound
     }
-    
 }

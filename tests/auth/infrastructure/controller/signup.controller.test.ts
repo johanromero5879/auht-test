@@ -1,13 +1,10 @@
-import { RegisterUser } from "@auth/application"
-import { SignupController } from "@auth/infrastructure/controller"
+import { container } from "@container/index"
+import { createMockReqAndRes } from "@tests/__mocks__"
+import { createRandomSignupUser } from "@tests/auth/__mocks__"
+import { Controller } from "@shared/infrastructure/controller"
 import { errorHandlerMiddleware } from "@shared/infrastructure/response-handler"
 
-import { createMockReqAndRes } from "@tests/__mocks__"
-import { MockUserRepository, createRandomSignupUser } from "@tests/auth/__mocks__"
-
-const userRepository = new MockUserRepository()
-const registerUser = RegisterUser(userRepository)
-const signupController = SignupController(registerUser)
+const signupController = container.auth.resolve<Controller>("SignupController")
 
 describe(`auth: signup controller`, () => {
     const mockUser = createRandomSignupUser()

@@ -25,7 +25,7 @@ export const handleError = (
     })
 }
 
-export const errorHandlerMiddleware = (err: any, req: Request, res: Response,next: NextFunction) => {
+export const errorHandlerMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
     let status = 500 // Internal Server Error
     const errorBody: ErrorBody = { message: "Ups! Something went wrong" }
     

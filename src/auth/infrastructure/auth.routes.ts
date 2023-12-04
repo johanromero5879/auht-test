@@ -1,14 +1,10 @@
 import { Router } from "express"
 
-import { RegisterUser } from "../application";
-import { SignupController } from "./controller";
-import { PrismaUserRepository } from "./repositories";
-
-// Dependencies
-const userRepository = new PrismaUserRepository()
-const registerUser = RegisterUser(userRepository)
+import { container } from "@container/index";
+import { Controller } from "@shared/infrastructure/controller";
 
 // Router
 export const authRouter = Router()
 
-authRouter.post("/signup", SignupController(registerUser))
+authRouter.post("/signup", container.auth.resolve<Controller>("SignupController"))
+authRouter.post("/login", container.auth.resolve<Controller>("LoginController"))

@@ -1,11 +1,10 @@
-import { Request, Response, NextFunction } from "express"
-
 import { IRegisterUser } from "@auth/application"
+import { Controller } from "@shared/infrastructure/controller"
 import { handleSuccess } from "@shared/infrastructure/response-handler"
 
-export const SignupController = (registerUser: IRegisterUser) => {
+export const SignupController = (registerUser: IRegisterUser): Controller => {
 
-    return async (req: Request, res: Response, next: NextFunction) => {
+    return async (req, res, next) => {
         try {
             const { email, password } = req.body
             await registerUser({ email, password })

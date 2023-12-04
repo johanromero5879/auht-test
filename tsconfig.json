@@ -4,9 +4,11 @@
     "module": "commonjs",
     "baseUrl": ".",
     "paths": {
+      "@app": ["src/app"],
+      "@config/*": ["src/config/*"],
       "@auth/*": ["src/auth/*"],
       "@shared/*": ["src/shared/*"],
-      "@app": ["src/app"],
+      "@container/*": ["src/container/*"],
       "@tests/*": ["tests/*"]
     },
     "esModuleInterop": true,

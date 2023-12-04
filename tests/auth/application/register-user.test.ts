@@ -1,9 +1,9 @@
-import { RegisterUser } from "@auth/application"
+import { container } from "@container/index"
 import { DuplicateError } from "@shared/errors"
-import { MockUserRepository, createRandomSignupUser } from "@tests/auth/__mocks__"
+import { IRegisterUser } from "@auth/application"
+import { createRandomSignupUser } from "@tests/auth/__mocks__"
 
-const userRepository = new MockUserRepository()
-const registerUser = RegisterUser(userRepository)
+const registerUser = container.auth.resolve<IRegisterUser>("RegisterUser")
 
 describe(`auth: register user`, () => {
     const mockUser = createRandomSignupUser()
