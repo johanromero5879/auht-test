@@ -18,6 +18,9 @@ export const createMockReqAndRes = () => {
     return { req, res, next }
 }
 
+export const getBodyFromMockedRes = (res: Response) => (res.json as jest.Mock).mock.calls[0][0]
+export const getErrorFromMockedNext = (next: NextFunction) => (next as jest.Mock).mock.calls[0][0]
+
 export const makeMockPostRequest = async ({app, endpoint, body, status}: {
     app: Express,
     endpoint: string, 

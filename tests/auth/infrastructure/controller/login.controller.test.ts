@@ -1,10 +1,10 @@
 import { UserIn } from "@auth/domain"
 import { container } from "@container/index"
 import { IRegisterUser } from "@auth/application"
-import { createMockReqAndRes } from "@tests/__mocks__"
 import { createRandomSignupUser } from "@tests/auth/__mocks__"
 import { Controller } from "@shared/infrastructure/controller"
 import { errorHandlerMiddleware } from "@shared/infrastructure/response-handler"
+import { createMockReqAndRes, getBodyFromMockedRes, getErrorFromMockedNext } from "@tests/__mocks__"
 
 const registerUser = container.auth.resolve<IRegisterUser>("RegisterUser")
 const loginController = container.auth.resolve<Controller>("LoginController")
@@ -33,11 +33,11 @@ describe(`auth: login controller`, () => {
         // Check if set a cookie
         expect(res.cookie).toHaveBeenCalled()
 
-        // Get the data that was sent by res.json
-        const data = (res.json as jest.Mock).mock.calls[0][0]
+        // Get the body that was sent by res.json
+        const body = getBodyFromMockedRes(res)
 
-        expect(data).toHaveProperty("success")
-        expect(data).toHaveProperty("data.access_token")
+        expect(body.success).toBeTruthy()
+        expect(body.data).toHaveProperty("access_token")
     })
 
     test('should return an error response when email does not exist', async () => {
@@ -52,7 +52,7 @@ describe(`auth: login controller`, () => {
         expect(next).toHaveBeenCalled()
 
         // Get the error that was sent by next
-        const error = (next as jest.Mock).mock.calls[0][0]
+        const error = getErrorFromMockedNext(next)
         errorHandlerMiddleware(error, req, res, next)
 
         expect(res.json).toHaveBeenCalledWith(invalidCredentialsResponse)
@@ -70,7 +70,7 @@ describe(`auth: login controller`, () => {
         expect(next).toHaveBeenCalled()
 
         // Get the error that was sent by next
-        const error = (next as jest.Mock).mock.calls[0][0]
+        const error = getErrorFromMockedNext(next)
         errorHandlerMiddleware(error, req, res, next)
 
         expect(res.json).toHaveBeenCalledWith(invalidCredentialsResponse)

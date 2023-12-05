@@ -1,7 +1,7 @@
 import { container } from "@container/index"
-import { createMockReqAndRes } from "@tests/__mocks__"
 import { createRandomSignupUser } from "@tests/auth/__mocks__"
 import { Controller } from "@shared/infrastructure/controller"
+import { createMockReqAndRes, getBodyFromMockedRes, getErrorFromMockedNext } from "@tests/__mocks__"
 import { errorHandlerMiddleware } from "@shared/infrastructure/response-handler"
 
 const signupController = container.auth.resolve<Controller>("SignupController")
@@ -15,12 +15,12 @@ describe(`auth: signup controller`, () => {
 
         await signupController(req, res, next)
 
-        //Get data used by res.json
-        const json = (res.json as jest.Mock).mock.calls[0][0]
+        //Get body used by res.json
+        const json = getBodyFromMockedRes(res)
 
-        expect(json?.success).toBeTruthy()
-        expect(json?.data).toHaveProperty("id")
-        expect(json?.data).toHaveProperty("email")
+        expect(json.success).toBeTruthy()
+        expect(json.data).toHaveProperty("id")
+        expect(json.data).toHaveProperty("email")
     })
 
     test('should return an error response when user data is not valid', async () => {
@@ -33,7 +33,7 @@ describe(`auth: signup controller`, () => {
         expect(next).toHaveBeenCalled()
 
         // Retrieve the error passed to the next function
-        const error = (next as jest.Mock).mock.calls[0][0]
+        const error = getErrorFromMockedNext(next)
 
         // Call the error middleware with the error
         errorHandlerMiddleware(error, req, res, next)
@@ -56,7 +56,7 @@ describe(`auth: signup controller`, () => {
         expect(next).toHaveBeenCalled()
 
         // Retrieve the error passed to the next function
-        const error = (next as jest.Mock).mock.calls[0][0]
+        const error = getErrorFromMockedNext(next)
 
         // Call the error middleware with the error
         errorHandlerMiddleware(error, req, res, next)
