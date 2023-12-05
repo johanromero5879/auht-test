@@ -1,8 +1,8 @@
 import { hashPassword } from "./hash-service"
 import { DuplicateError } from "@shared/errors"
-import { UserRepository, UserIn, validateUser } from "@auth/domain";
+import { UserRepository, UserIn, UserOut, validateUser } from "@auth/domain";
 
-export type IRegisterUser = (user: UserIn) => Promise<void>
+export type IRegisterUser = (user: UserIn) => Promise<UserOut>
 
 export const RegisterUser = (userRepository: UserRepository): IRegisterUser => {
     return async (user: UserIn) => {
@@ -16,6 +16,6 @@ export const RegisterUser = (userRepository: UserRepository): IRegisterUser => {
 
         user.password = await hashPassword(user.password)
 
-        await userRepository.save(user)
+        return await userRepository.save(user)
     }
 }

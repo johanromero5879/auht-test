@@ -15,12 +15,12 @@ describe(`auth: signup controller`, () => {
 
         await signupController(req, res, next)
 
-        expect(res.json).toHaveBeenCalledWith({
-            success: true,
-            data: {
-                message: "User registered successfully"
-            }
-        });
+        //Get data used by res.json
+        const json = (res.json as jest.Mock).mock.calls[0][0]
+
+        expect(json?.success).toBeTruthy()
+        expect(json?.data).toHaveProperty("id")
+        expect(json?.data).toHaveProperty("email")
     })
 
     test('should return an error response when user data is not valid', async () => {

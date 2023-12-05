@@ -8,10 +8,14 @@ export class InMemoryUserRepository implements UserRepository {
     ){} 
 
     async save(user: UserIn) {
-        this.users.push({
+        const newUser = {
             id: randomUUID(),
             ...user
-        })
+        }
+
+        this.users.push(newUser)
+
+        return (({ password, ...user }) => user)(newUser)
     }
 
     findByEmail(email: string): Promise<UserOut | null>
@@ -20,17 +24,8 @@ export class InMemoryUserRepository implements UserRepository {
         const users = this.users.filter(user => user.email === email)
         if (users.length === 0) return null
 
-        if (showPassword) {
-            return {
-                id: users[0].id,
-                email: users[0].email,
-                password: users[0].password
-            }
-        }
+        if (showPassword) return users[0]
 
-        return {
-            id: users[0].id,
-            email: users[0].email
-        }
+        return (({ password, ...user }) => user)(users[0])
     }
 }

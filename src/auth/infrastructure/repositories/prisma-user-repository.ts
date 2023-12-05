@@ -10,8 +10,13 @@ export class PrismaUserRepository implements UserRepository {
         this.prisma = prisma
     }
 
-    async save(user: UserIn): Promise<void> {
-        await this.prisma.user.create({ data: user }) 
+    async save(user: UserIn): Promise<UserOut> {
+        const newUser = await this.prisma.user.create({ 
+            data: user,
+            select: { id: true, email: true }
+        }) 
+
+        return newUser
     }
 
     findByEmail(email: string): Promise<UserOut | null>
