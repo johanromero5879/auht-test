@@ -1,5 +1,6 @@
-import { sign, verify } from "jsonwebtoken"
+import { sign, verify, JwtPayload } from "jsonwebtoken"
 
+import { AuthenticationError } from "@shared/errors"
 
 export class TokenService {
     constructor(
@@ -25,7 +26,13 @@ export class TokenService {
         return sign(payload, this.secretKey, { expiresIn: "1d" })
     }
 
-    verifyToken(token: string) {
-        return verify(token, this.secretKey)
+    verifyToken(token: string): string {
+        try {
+            const { sub } = verify(token, this.secretKey) as JwtPayload
+            return sub!
+        } catch {
+            throw new AuthenticationError("Invalid refresh token")
+        }
+        
     }
 }
