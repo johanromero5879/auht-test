@@ -30,4 +30,14 @@ export class PrismaUserRepository implements UserRepository {
 
         return userFound
     }
+
+    async findById(id: string): Promise<UserOut | null> {
+
+        const userFound = this.prisma.user.findUnique({
+            where: { id },
+            select: { id: true, email: true}
+        })
+
+        return userFound
+    }
 }
