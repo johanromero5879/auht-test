@@ -1,7 +1,10 @@
 import request from "supertest"
 
 import { createApp } from "@app"
+import { UserOut } from "@auth/domain"
 import { loadEnv } from "@config/index"
+import { container } from "@container/index"
+import { type TokenService } from "@auth/application"
 import { makeMockPostRequest } from "@tests/__mocks__"
 import { createRandomSignupUser } from "@tests/auth/__mocks__"
 
@@ -10,18 +13,25 @@ const route = '/api/v1/auth'
 
 describe(`API: ${route}`, () => {
     const user = createRandomSignupUser()
+    let loggedUser: UserOut
 
-    describe(`POST ${route}/signup`, () => {
+    describe(`POST /signup`, () => {
         const endpoint = `${route}/signup`
 
-
         test("should return 201 when a user is registered", async () => {
-            await makeMockPostRequest({ 
+            const { body } = await makeMockPostRequest({ 
                 app, 
                 endpoint, 
                 body: user, 
                 status: 201 // 201: Created
             })
+
+            expect(body.success).toBeTruthy()
+            expect(body.data).toHaveProperty("id")
+            expect(body.data).toHaveProperty("email")
+
+            // Save user for next tests
+            loggedUser = body.data
         })
 
         test("should return 409 when there is a duplicated email", async () => {
@@ -45,7 +55,7 @@ describe(`API: ${route}`, () => {
         })
     })
 
-    describe(`POST ${route}/login`, () => {
+    describe(`POST /login`, () => {
         const endpoint = `${route}/login`
 
         test("should return 200 when a user is logged in correctly with refresh token in cookies", async () => {
@@ -82,13 +92,39 @@ describe(`API: ${route}`, () => {
         })
     })
 
-    describe(`DELETE ${route}/logout`, () => {
+    describe(`DELETE /logout`, () => {
         const endpoint = `${route}/logout`
         
-        test("should return 204", async () => {
+        test("should return 204 when user is logged out", async () => {
             await request(app)
                     .delete(endpoint)
                     .expect(204) // No content
+        })
+    })
+
+    describe(`GET /refresh-token`, () => {
+        const endpoint = `${route}/refresh-token`
+        const tokenService = container.auth.resolve<TokenService>("TokenService")
+
+        test("should return 201 when it creates a new access token", async () => {
+            const refreshToken = tokenService.generateRefreshToken(loggedUser.id)
+            await request(app)
+                    .get(endpoint)
+                    .set("Cookie", [`refresh_token=${refreshToken}`])
+                    .expect(201) // Created
+        })
+
+        test("should return 401 when refresh token is missing", async () => {
+            await request(app)
+                    .get(endpoint)
+                    .expect(401) // Unauthorized
+        })
+
+        test("should return 401 when refresh token is invalid", async () => {
+            await request(app)
+                    .get(endpoint)
+                    .set("Cookie", [`refresh_token=<INVALID_REFRESH_TOKEN>`])
+                    .expect(401) // Unauthorized
         })
     })
 })
