@@ -1,8 +1,8 @@
 import { comparePassword } from "./hash-service"
-import { UserOut, UserRepository } from "@auth/domain";
+import { User, UserRepository } from "@auth/domain";
 import { AuthenticationError, ValidationError } from "@shared/errors"
 
-export type IVerifyCredentials = (email: string, password: string) => Promise<UserOut>
+export type IVerifyCredentials = (email: string, password: string) => Promise<User>
 
 export const VerifyCredentials = (userRepository: UserRepository): IVerifyCredentials => {
     return async (email: string, password: string) => {
@@ -15,7 +15,7 @@ export const VerifyCredentials = (userRepository: UserRepository): IVerifyCreden
         
         // Check if email exists
         const userFound = await userRepository.findByEmail(email, true)
-        if (!userFound) throw new AuthenticationError(errorMessage)
+        if (!userFound || !userFound.password) throw new AuthenticationError(errorMessage)
 
         // Check if password matches with the hash saved
         const isMatching = await comparePassword(password, userFound.password)

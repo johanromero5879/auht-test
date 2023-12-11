@@ -1,10 +1,10 @@
-import { UserIn, UserOut, User } from "./types"
+import { User, SignupUser, PasswordUser } from "./types"
 
 export interface UserRepository {
-    save(user: UserIn): Promise<UserOut>
+    save(user: SignupUser): Promise<User>
 
-    findByEmail(email: string): Promise<UserOut | null>
-    findByEmail(email: string, showPassword: boolean): Promise<User | null>
+    findByEmail(email: string): Promise<User | null>
+    findByEmail(email: string, showPassword: boolean): Promise<PasswordUser | null>
 
-    findById(id: string): Promise<UserOut | null>
+    findById(id: string): Promise<User | null>
 }

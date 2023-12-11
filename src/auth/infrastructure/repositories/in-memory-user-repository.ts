@@ -1,13 +1,19 @@
 import { randomUUID } from "crypto"
 
-import { User, UserIn, UserOut, UserRepository } from "@auth/domain"
+import { 
+    User, 
+    UserWithCredentials,
+    SignupUser, 
+    UserRepository, 
+    PasswordUser
+} from "@auth/domain"
 
 export class InMemoryUserRepository implements UserRepository {
     constructor(
-        private users: User[] = []
+        private users: UserWithCredentials[] = []
     ){} 
 
-    async save(user: UserIn) {
+    async save(user: SignupUser) {
         const newUser = {
             id: randomUUID(),
             ...user
@@ -15,24 +21,30 @@ export class InMemoryUserRepository implements UserRepository {
 
         this.users.push(newUser)
 
-        return (({ password, ...user }) => user)(newUser)
+        return (({ id, email }) => ({ id, email }))(newUser)
     }
 
-    findByEmail(email: string): Promise<UserOut | null>
-    findByEmail(email: string, showPassword: boolean): Promise<User | null>
-    async findByEmail(email: string, showPassword: boolean = false): Promise<UserOut | User | null> {
-        const users = this.users.filter(user => user.email === email)
-        if (users.length === 0) return null
+    findByEmail(email: string): Promise<User | null>
+    findByEmail(email: string, showPassword: boolean): Promise<PasswordUser | null>
+    async findByEmail(email: string, showPassword: boolean = false): Promise<User | PasswordUser | null> {
+        const user = this.users.filter(user => user.email === email)[0]
 
-        if (showPassword) return users[0]
+        if (!user) return null
+        if (showPassword) return user
 
-        return (({ password, ...user }) => user)(users[0])
+        return {
+            id: user.id,
+            email: user.email
+        }
     }
 
-    async findById(id: string): Promise<UserOut | null> {
-        const users = this.users.filter(user => user.id === id)
-        if (users.length === 0) return null
+    async findById(id: string): Promise<User | null> {
+        const user = this.users.filter(user => user.id === id)[0]
+        if (!user) return null
 
-        return (({ password, ...user }) => user)(users[0])
+        return {
+            id: user.id,
+            email: user.email
+        }
     }
 }

@@ -1,5 +1,6 @@
 export * from "./hash-service"
 export * from "./token-service"
 export * from "./register-user"
+export * from "./google-service"
 export * from "./verify-credentials"
 export * from "./find-user-by-id"

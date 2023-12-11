@@ -1,7 +1,7 @@
 import { randomBytes } from "crypto"
 
 import { ValidationError } from "@shared/errors"
-import { validateUser, UserIn } from "@auth/domain"
+import { validateUser, PasswordUserIn } from "@auth/domain"
 import { createRandomSignupUser } from "@tests/auth/__mocks__"
 
 const generateRandomString = (length: number) => {
@@ -9,7 +9,7 @@ const generateRandomString = (length: number) => {
 }
 
 describe("auth: validate user", () => {
-    let user: UserIn
+    let user: PasswordUserIn
 
     beforeEach(() => {
         user = createRandomSignupUser()

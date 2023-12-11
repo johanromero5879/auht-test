@@ -14,5 +14,7 @@ datasource db {
 model User {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique
-  password String
+  password String?
+  google_id String?
+  outlook_id String?
 }

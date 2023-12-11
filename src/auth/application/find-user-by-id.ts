@@ -1,7 +1,7 @@
-import { UserRepository, UserOut } from "@auth/domain";
+import { UserRepository, User } from "@auth/domain";
 import { NotFoundError } from "@shared/errors";
 
-export type IFindUserById = (id: string) => Promise<UserOut>
+export type IFindUserById = (id: string) => Promise<User>
 
 export const FindUserById = (userRepository: UserRepository) => {
     return async (id: string) => {

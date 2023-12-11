@@ -1,7 +1,7 @@
-import { UserIn } from "./types";
+import { PasswordUserIn } from "./types";
 import { ValidationError } from "@shared/errors"
 
-export const validateUser = (user: UserIn) => {
+export const validateUser = (user: PasswordUserIn) => {
     validateEmail(user.email)
     validatePassword(user.password)
 }

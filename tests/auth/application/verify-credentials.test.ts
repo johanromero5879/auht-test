@@ -1,4 +1,4 @@
-import { UserIn } from "@auth/domain"
+import { PasswordUserIn } from "@auth/domain"
 import { container } from "@container/index"
 import { createRandomSignupUser } from "@tests/auth/__mocks__"
 import { IRegisterUser, IVerifyCredentials } from "@auth/application"
@@ -7,7 +7,7 @@ import { AuthenticationError, ValidationError } from "@shared/errors"
 const registerUser = container.auth.resolve<IRegisterUser>("RegisterUser")
 const verifyCredentials = container.auth.resolve<IVerifyCredentials>("VerifyCredentials")
 
-let user: UserIn
+let user: PasswordUserIn
 
 beforeAll(async () => {
     user = createRandomSignupUser()

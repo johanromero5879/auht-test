@@ -1,6 +1,5 @@
-import { UserRepository } from "@auth/domain";
+import { AuthenticationError } from "@shared/errors";
 import { Controller } from "@shared/infrastructure/controller";
-import { AuthenticationError, NotFoundError } from "@shared/errors";
 import type { IFindUserById, TokenService } from "@auth/application";
 import { handleSuccess } from "@shared/infrastructure/response-handler";
 

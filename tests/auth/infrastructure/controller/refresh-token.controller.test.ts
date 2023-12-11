@@ -4,7 +4,7 @@ import { createRandomSignupUser } from "@tests/auth/__mocks__";
 import { IRegisterUser, type TokenService } from "@auth/application";
 import { errorHandlerMiddleware } from "@shared/infrastructure/response-handler";
 import { createMockReqAndRes, getBodyFromMockedRes, getErrorFromMockedNext } from "@tests/__mocks__";
-import { UserOut } from "@auth/domain";
+import { User } from "@auth/domain";
 
 describe("auth: refresh token", () => {
 
@@ -12,7 +12,7 @@ describe("auth: refresh token", () => {
     const registerUser = container.auth.resolve<IRegisterUser>("RegisterUser")
     const refreshTokenController = container.auth.resolve<Controller>("RefreshTokenController")
 
-    let user: UserOut
+    let user: User
 
     beforeAll(async () => {
         const newUser = createRandomSignupUser()

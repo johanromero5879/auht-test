@@ -1,9 +1,7 @@
 import { randomUUID } from "crypto"
 import { faker } from "@faker-js/faker"
 
-import { UserIn } from "@auth/domain"
-
-export const createRandomSignupUser = (): UserIn => {
+export const createRandomSignupUser = () => {
     return {
         email: faker.internet.email(),
         password: faker.internet.password({ 

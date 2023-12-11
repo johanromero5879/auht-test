@@ -1,7 +1,7 @@
 import request from "supertest"
 
 import { createApp } from "@app"
-import { UserOut } from "@auth/domain"
+import { User } from "@auth/domain"
 import { loadEnv } from "@config/index"
 import { container } from "@container/index"
 import { type TokenService } from "@auth/application"
@@ -13,7 +13,7 @@ const route = '/api/v1/auth'
 
 describe(`API: ${route}`, () => {
     const user = createRandomSignupUser()
-    let loggedUser: UserOut
+    let loggedUser: User
 
     describe(`POST /signup`, () => {
         const endpoint = `${route}/signup`

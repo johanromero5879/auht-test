@@ -1,41 +1,52 @@
 import type { PrismaClient } from "@prisma/client"
 
 import { prisma } from "@shared/infrastructure/prisma"
-import { UserIn, UserOut, UserRepository, User} from "@auth/domain";
+import { UserRepository, User, SignupUser, PasswordUser } from "@auth/domain";
 
 export class PrismaUserRepository implements UserRepository {
     private prisma: PrismaClient
+    private defaultSelect = { id: true, email: true }
 
     constructor() {
         this.prisma = prisma
     }
 
-    async save(user: UserIn): Promise<UserOut> {
+    async save(user: SignupUser): Promise<User> {
         const newUser = await this.prisma.user.create({ 
             data: user,
-            select: { id: true, email: true }
+            select: this.defaultSelect
         }) 
 
         return newUser
     }
 
-    findByEmail(email: string): Promise<UserOut | null>
-    findByEmail(email: string, showPassword: boolean): Promise<User | null>
-    async findByEmail(email: string, showPassword: boolean = false): Promise<UserOut | User | null> {
+    findByEmail(email: string): Promise<User | null>
+    findByEmail(email: string, showPassword: boolean): Promise<PasswordUser | null>
+    async findByEmail(email: string, showPassword: boolean = false): Promise<User | PasswordUser | null> {
+        let select
+
+        if (showPassword) {
+            select = {
+                ...this.defaultSelect,
+                password: true
+            }
+        } else {
+            select = this.defaultSelect
+        }
 
         const userFound = this.prisma.user.findUnique({
             where: { email },
-            select: { id: true, email: true, password: showPassword}
+            select
         })
 
         return userFound
     }
 
-    async findById(id: string): Promise<UserOut | null> {
+    async findById(id: string): Promise<User | null> {
 
         const userFound = this.prisma.user.findUnique({
             where: { id },
-            select: { id: true, email: true}
+            select: this.defaultSelect
         })
 
         return userFound

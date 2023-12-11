@@ -1,4 +1,4 @@
-import { UserIn } from "@auth/domain"
+import { PasswordUserIn } from "@auth/domain"
 import { container } from "@container/index"
 import { IRegisterUser } from "@auth/application"
 import { createRandomSignupUser } from "@tests/auth/__mocks__"
@@ -9,7 +9,7 @@ import { createMockReqAndRes, getBodyFromMockedRes, getErrorFromMockedNext } fro
 const registerUser = container.auth.resolve<IRegisterUser>("RegisterUser")
 const loginController = container.auth.resolve<Controller>("LoginController")
 
-let user: UserIn
+let user: PasswordUserIn
 
 beforeAll(async () => {
     user = createRandomSignupUser()

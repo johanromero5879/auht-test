@@ -1,11 +1,11 @@
 import { hashPassword } from "./hash-service"
 import { DuplicateError } from "@shared/errors"
-import { UserRepository, UserIn, UserOut, validateUser } from "@auth/domain";
+import { UserRepository, User, validateUser, PasswordUserIn } from "@auth/domain";
 
-export type IRegisterUser = (user: UserIn) => Promise<UserOut>
+export type IRegisterUser = (user: PasswordUserIn) => Promise<User>
 
 export const RegisterUser = (userRepository: UserRepository): IRegisterUser => {
-    return async (user: UserIn) => {
+    return async (user: PasswordUserIn) => {
         // Clone the user object to avoid side effects with hash password
         user = {...user}
 
