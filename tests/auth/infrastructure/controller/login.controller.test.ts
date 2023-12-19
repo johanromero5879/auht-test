@@ -38,6 +38,7 @@ describe(`auth: login controller`, () => {
 
         expect(body.success).toBeTruthy()
         expect(body.data).toHaveProperty("access_token")
+        expect(body.data).toHaveProperty("user")
     })
 
     test('should return an error response when email does not exist', async () => {

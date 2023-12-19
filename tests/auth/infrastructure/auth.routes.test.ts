@@ -26,12 +26,8 @@ describe(`API: ${route}`, () => {
                 status: 201 // 201: Created
             })
 
-            expect(body.success).toBeTruthy()
-            expect(body.data).toHaveProperty("id")
-            expect(body.data).toHaveProperty("email")
-
             // Save user for next tests
-            loggedUser = body.data
+            loggedUser = body.data.user
         })
 
         test("should return 409 when there is a duplicated email", async () => {

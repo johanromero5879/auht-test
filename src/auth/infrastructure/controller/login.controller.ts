@@ -18,7 +18,7 @@ export const LoginController = (
             // Send refresh token by cookies
             setRefreshTokenCookie(res, refresh_token)
 
-            handleSuccess(res, { access_token })
+            handleSuccess(res, { user, access_token })
         } catch (err) {
             next(err)
         }

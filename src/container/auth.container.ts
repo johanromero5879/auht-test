@@ -27,7 +27,7 @@ export class AuthContainer extends DependencyContainer {
         this.register("TokenService", tokenService)
 
         // infrastructure
-        this.register("SignupController", SignupController(registerUser))
+        this.register("SignupController", SignupController(registerUser, tokenService))
         this.register("LoginController", LoginController(verifyCredentials, tokenService))
         this.register("LogoutController", LogoutController())
         this.register("RefreshTokenController", RefreshTokenController(findUserById, tokenService))

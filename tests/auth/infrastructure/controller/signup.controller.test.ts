@@ -15,12 +15,15 @@ describe(`auth: signup controller`, () => {
 
         await signupController(req, res, next)
 
+        // Check if set a cookie
+        expect(res.cookie).toHaveBeenCalled()
+
         //Get body used by res.json
         const json = getBodyFromMockedRes(res)
 
         expect(json.success).toBeTruthy()
-        expect(json.data).toHaveProperty("id")
-        expect(json.data).toHaveProperty("email")
+        expect(json.data).toHaveProperty("access_token")
+        expect(json.data).toHaveProperty("user")
     })
 
     test('should return an error response when user data is not valid', async () => {
