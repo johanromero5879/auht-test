@@ -13,7 +13,7 @@ export const createApp = (config: Config) => {
     app.use(json())
     app.use(cookieParser())
     app.use(cors({
-        origin: config.ALLOWED_ORIGINS.split(","),
+        origin: config.CLIENT_URL,
         credentials: true
     }))
 

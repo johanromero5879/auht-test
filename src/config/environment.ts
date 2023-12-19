@@ -7,11 +7,14 @@ export enum Env {
 }
 
 export interface Config {
-    NODE_ENV: Env,
-    PORT: number,
-    ALLOWED_ORIGINS: string,
-    DATABASE_URL: string,
+    NODE_ENV: Env
+    PORT: number
+    CLIENT_URL: string
+    DATABASE_URL: string
     JWT_SECRET: string
+    GOOGLE_CLIENT_ID: string
+    GOOGLE_CLIENT_SECRET: string
+    GOOGLE_REDIRECT_URI: string
 }
 
 /**
