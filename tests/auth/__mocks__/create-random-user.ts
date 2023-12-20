@@ -11,4 +11,11 @@ export const createRandomSignupUser = () => {
     }
 }
 
+export const createRandomGoogleUser = () => {
+    return {
+        email: faker.internet.email(),
+        google_id: faker.number.int().toString()
+    }
+}
+
 export const createRandomID = () => randomUUID()
