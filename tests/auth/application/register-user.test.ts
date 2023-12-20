@@ -9,7 +9,9 @@ describe(`auth: register user`, () => {
     const mockUser = createRandomSignupUser()
 
     test('should register a new user', async () => {
-        await registerUser(mockUser)
+        const registeredUser = await registerUser(mockUser)
+        expect(registeredUser).toHaveProperty("id")
+        expect(registeredUser).toHaveProperty("email")
     })
 
     test('should not allow to register a duplicated email', async () => {

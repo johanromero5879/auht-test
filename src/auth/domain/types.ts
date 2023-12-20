@@ -8,16 +8,13 @@ export interface PasswordUser extends User {
 }
 export type PasswordUserIn = Omit<PasswordUser, "id">
 
-export interface GoogleUser extends User {
+export interface GoogleUser extends Omit<User, "id"> {
     google_id: string
 }
-export type GoogleUserIn = Omit<GoogleUser, "id">
 
-export interface OutlookUser extends User {
+export interface OutlookUser extends Omit<User, "id"> {
     outlook_id: string
 }
-export type OutlookUserIn = Omit<OutlookUser, "id">
 
-export type SignupUser = PasswordUserIn | GoogleUserIn | OutlookUserIn
-export type UserWithCredentials = PasswordUser | GoogleUser | OutlookUser
+export type SignupUser = PasswordUserIn | GoogleUser | OutlookUser
 

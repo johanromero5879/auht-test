@@ -34,7 +34,7 @@ export class PrismaUserRepository implements UserRepository {
             select = this.defaultSelect
         }
 
-        const userFound = this.prisma.user.findUnique({
+        const userFound = await this.prisma.user.findUnique({
             where: { email },
             select
         })
@@ -44,8 +44,18 @@ export class PrismaUserRepository implements UserRepository {
 
     async findById(id: string): Promise<User | null> {
 
-        const userFound = this.prisma.user.findUnique({
+        const userFound = await this.prisma.user.findUnique({
             where: { id },
+            select: this.defaultSelect
+        })
+
+        return userFound
+    }
+
+    async findByGoogleId(googleId: string): Promise<User | null> {
+
+        const userFound = await this.prisma.user.findFirst({
+            where: { google_id: googleId },
             select: this.defaultSelect
         })
 

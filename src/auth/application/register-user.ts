@@ -8,7 +8,7 @@ export const RegisterUser = (userRepository: UserRepository): IRegisterUser => {
     return async (user: PasswordUserIn) => {
         // Clone the user object to avoid side effects with hash password
         user = {...user}
-
+        
         validateUser(user)
 
         const userFound = await userRepository.findByEmail(user.email)

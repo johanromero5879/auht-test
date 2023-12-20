@@ -7,4 +7,5 @@ export interface UserRepository {
     findByEmail(email: string, showPassword: boolean): Promise<PasswordUser | null>
 
     findById(id: string): Promise<User | null>
+    findByGoogleId(googleId: string): Promise<User | null>
 }

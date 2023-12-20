@@ -2,15 +2,15 @@ import { randomUUID } from "crypto"
 
 import { 
     User, 
-    UserWithCredentials,
     SignupUser, 
     UserRepository, 
-    PasswordUser
+    PasswordUser,
+    GoogleUser
 } from "@auth/domain"
 
 export class InMemoryUserRepository implements UserRepository {
     constructor(
-        private users: UserWithCredentials[] = []
+        private users: User[] = []
     ){} 
 
     async save(user: SignupUser) {
@@ -21,7 +21,7 @@ export class InMemoryUserRepository implements UserRepository {
 
         this.users.push(newUser)
 
-        return (({ id, email }) => ({ id, email }))(newUser)
+        return newUser
     }
 
     findByEmail(email: string): Promise<User | null>
@@ -40,6 +40,16 @@ export class InMemoryUserRepository implements UserRepository {
 
     async findById(id: string): Promise<User | null> {
         const user = this.users.filter(user => user.id === id)[0]
+        if (!user) return null
+
+        return {
+            id: user.id,
+            email: user.email
+        }
+    }
+
+    async findByGoogleId(googleId: string): Promise<User | null> {
+        const user = this.users.filter(user => (user as unknown as GoogleUser).google_id === googleId)[0]
         if (!user) return null
 
         return {
