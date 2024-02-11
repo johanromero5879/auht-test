@@ -12,9 +12,9 @@ export interface GoogleUser extends Omit<User, "id"> {
     google_id: string
 }
 
-export interface OutlookUser extends Omit<User, "id"> {
-    outlook_id: string
+export interface MicrosoftUser extends Omit<User, "id"> {
+    microsoft_id: string
 }
 
-export type SignupUser = PasswordUserIn | GoogleUser | OutlookUser
+export type SignupUser = PasswordUserIn | GoogleUser | MicrosoftUser
 

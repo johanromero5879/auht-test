@@ -61,4 +61,14 @@ export class PrismaUserRepository implements UserRepository {
 
         return userFound
     }
+
+    async findByMicrosoftId(microsoftId: string): Promise<User | null> {
+
+        const userFound = await this.prisma.user.findFirst({
+            where: { microsoft_id: microsoftId },
+            select: this.defaultSelect
+        })
+
+        return userFound
+    }
 }

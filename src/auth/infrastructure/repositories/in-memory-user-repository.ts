@@ -3,9 +3,10 @@ import { randomUUID } from "crypto"
 import { 
     User, 
     SignupUser, 
-    UserRepository, 
+    GoogleUser,
     PasswordUser,
-    GoogleUser
+    MicrosoftUser,
+    UserRepository, 
 } from "@auth/domain"
 
 export class InMemoryUserRepository implements UserRepository {
@@ -50,6 +51,16 @@ export class InMemoryUserRepository implements UserRepository {
 
     async findByGoogleId(googleId: string): Promise<User | null> {
         const user = this.users.filter(user => (user as unknown as GoogleUser).google_id === googleId)[0]
+        if (!user) return null
+
+        return {
+            id: user.id,
+            email: user.email
+        }
+    }
+
+    async findByMicrosoftId(microsoftId: string): Promise<User | null> {
+        const user = this.users.filter(user => (user as unknown as MicrosoftUser).microsoft_id === microsoftId)[0]
         if (!user) return null
 
         return {

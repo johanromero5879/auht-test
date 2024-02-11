@@ -8,4 +8,5 @@ export interface UserRepository {
 
     findById(id: string): Promise<User | null>
     findByGoogleId(googleId: string): Promise<User | null>
+    findByMicrosoftId(microsoftId: string): Promise<User | null>
 }
