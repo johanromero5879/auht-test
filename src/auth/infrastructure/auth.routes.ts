@@ -12,3 +12,5 @@ authRouter.delete("/logout", container.auth.resolve<Controller>("LogoutControlle
 authRouter.get("/refresh-token", container.auth.resolve<Controller>("RefreshTokenController"))
 authRouter.get("/google", container.auth.resolve<Controller>("RedirectGoogleOAuthController"))
 authRouter.get("/google/callback", container.auth.resolve<Controller>("GoogleOAuthController"))
+authRouter.get("/microsoft", container.auth.resolve<Controller>("RedirectMicrosoftOAuthController"))
+authRouter.get("/microsoft/callback", container.auth.resolve<Controller>("MSOAuthController"))
